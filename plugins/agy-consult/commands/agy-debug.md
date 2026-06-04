@@ -90,8 +90,9 @@ grep -rnEi 'BEGIN [A-Z ]*PRIVATE KEY|AKIA[0-9A-Z]{16}|(authorization|bearer)[[:s
 
 ## Run
 
-This command may run **only** `agy ...` and the git/`mktemp`/`sed` commands
-above — **not** Read/Write, and nothing else. Every one of those is in
+This command may run **only** `agy ...` and the
+`git`/`mktemp`/`sed`/`grep` commands above (including the pre-send `grep` and
+`git check-ignore` scan) — **not** Read/Write, and nothing else. Every one of those is in
 `allowed-tools`, so a non-bypass user is never prompted mid-command. Because
 real code is attached, run with `--sandbox`:
 

@@ -99,8 +99,8 @@ grep -rnEi 'BEGIN [A-Z ]*PRIVATE KEY|AKIA[0-9A-Z]{16}|(authorization|bearer)[[:s
 
 ## Run
 
-This command may run **only** `agy ...` and the git/`mktemp` commands above —
-nothing else. Because real code is attached, run with `--sandbox`:
+This command may run **only** `agy ...` and the git/`mktemp`/`grep` commands above (including the pre-send `grep` and
+`git check-ignore` scan) — nothing else. Because real code is attached, run with `--sandbox`:
 
 ```
 agy -p "<review prompt>" --add-dir "$dir" --sandbox --print-timeout 3m

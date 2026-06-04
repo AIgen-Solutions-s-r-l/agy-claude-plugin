@@ -62,7 +62,7 @@ claude plugin install agy-consult@aigen-cli-tools
 ```
 </details>
 
-> **Restart Claude Code** (or open a new session) for the `/agy` command to load.
+> **Restart Claude Code** (or open a new session) for the agy-consult commands to load.
 
 ## 🧑‍💻 Usage
 
