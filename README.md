@@ -2,9 +2,11 @@
 
 # 🛰️ agy-consult
 
-### Antigravity, one slash away.
-Consult **Google Antigravity** (`agy`) **without leaving Claude Code** —
-ask it a question with `/agy`, get the answer back inline, keep working.
+### A second opinion, four slashes away.
+A four-command suite — `/agy`, `/agy-review`, `/agy-debug`, `/agy-panel` — that
+consults **Gemini, Claude, and GPT-OSS** models through the **Antigravity**
+(`agy`) CLI **without leaving Claude Code**. Ask, review a diff, debug a trace,
+or poll a panel — answers come back inline so you keep working.
 
 <br/>
 
@@ -115,7 +117,10 @@ agy-claude-plugin/
         ├── .claude-plugin/
         │   └── plugin.json        # plugin manifest (v0.3.1)
         └── commands/
-            └── agy.md             # the /agy slash command
+            ├── agy.md             # /agy        — inline second opinion
+            ├── agy-review.md      # /agy-review  — review the current diff
+            ├── agy-debug.md       # /agy-debug   — root-cause a pasted error
+            └── agy-panel.md       # /agy-panel   — cross-model comparison
 ```
 
 ## 🔄 Updating
@@ -127,8 +132,8 @@ claude plugin update agy-consult@aigen-cli-tools   # upgrade the installed plugi
 
 ## 🤝 Contributing
 
-Issues and PRs welcome. The whole plugin is one markdown command file plus two
-small JSON manifests — easy to fork, easy to extend.
+Issues and PRs welcome. The whole plugin is one markdown file per command plus
+two small JSON manifests — easy to fork, easy to extend.
 
 ## 📄 License
 

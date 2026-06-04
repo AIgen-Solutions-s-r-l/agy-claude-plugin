@@ -1,0 +1,13 @@
+name: copy-truth
+on: [push, pull_request]
+jobs:
+  grep-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fail on dead storefront strings
+        run: |
+          dead='via the /agy command|one markdown command file|Gemini by default|Antigravity with -P'
+          if grep -rnE "$dead" . --exclude-dir=.git --exclude=CHANGELOG.md --exclude=copy-truth.yml; then
+            echo "::error::Dead storefront copy reappeared (see matches above)."; exit 1
+          fi
