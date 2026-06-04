@@ -40,6 +40,18 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   cwd-keyed and last-writer-wins, and pointed users to `agy --conversation <ID>`
   for a deterministic resume.
 
+### Fixed
+- **Storefront truth-pass — public copy now matches the shipped product.** The
+  repo description, `plugin.json`, `marketplace.json`, and README hero/subtitle,
+  Layout block, and Contributing note all described a single `/agy` command (and
+  a removed `-P` / Gemini-default flow) while **four** commands ship (`/agy`,
+  `/agy-review`, `/agy-debug`, `/agy-panel`). Rewrote them to the factual
+  four-command suite fronting Gemini, Claude, and GPT-OSS through the Antigravity
+  (`agy`) CLI. No pricing or positioning claims; command recipes untouched.
+- **Anti-drift grep-gate CI** (`.github/workflows/copy-truth.yml`): fails the
+  build if any retired/dead public string reappears (CHANGELOG excluded as a
+  historical record), so the storefront copy cannot silently regress.
+
 ## [0.3.1] — 2026-06-04
 
 ### Changed
