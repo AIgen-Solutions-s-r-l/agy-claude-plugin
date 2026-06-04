@@ -2,18 +2,17 @@
 
 # 🛰️ agy-consult
 
-### A second opinion, one slash away.
-Consult an external coding-model CLI **without leaving Claude Code** —
-**Gemini** by default, **Google Antigravity** (`agy`) with `-P`.
+### Antigravity, one slash away.
+Consult **Google Antigravity** (`agy`) **without leaving Claude Code** —
+ask it a question with `/agy`, get the answer back inline, keep working.
 
 <br/>
 
 ![Claude Code](https://img.shields.io/badge/Claude%20Code-plugin-D97757?style=for-the-badge&logo=anthropic&logoColor=white)
-![Version](https://img.shields.io/badge/version-0.1.0-2563EB?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-0.2.0-2563EB?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-16A34A?style=for-the-badge)
 
-![Gemini](https://img.shields.io/badge/default-Gemini-4285F4?logo=googlegemini&logoColor=white)
-![Antigravity](https://img.shields.io/badge/%2DP-Antigravity%20(agy)-1A73E8?logo=google&logoColor=white)
+![Antigravity](https://img.shields.io/badge/backend-Antigravity%20(agy)-1A73E8?logo=google&logoColor=white)
 ![Marketplace](https://img.shields.io/badge/marketplace-aigen--cli--tools-6B7280)
 
 </div>
@@ -24,31 +23,21 @@ Consult an external coding-model CLI **without leaving Claude Code** —
 
 You're deep in a Claude Code session and want a **second model's take** —
 a tricky algorithm, an unfamiliar stack trace, a quick design sanity-check.
-`agy-consult` lets Claude ask **Gemini** or **Antigravity** inline, then keep
-driving your work with the answer in hand. No tab-switching, no copy-paste.
+`agy-consult` lets Claude ask **Antigravity** inline, then keep driving your
+work with the answer in hand. No tab-switching, no copy-paste.
 
-```text
-You ──▶ Claude Code ──▶ /agy "is this regex catastrophic?" ──▶ Gemini ──▶ answer ──▶ Claude keeps going
-                          /agy -P "design a retry policy"  ──▶ Antigravity ──┘
-```
-
-## 🚦 How it routes
+## 🔁 The flow
 
 ```mermaid
-flowchart LR
-    U["<b>/agy …</b>"] --> Q{"starts with<br/>-P · --antigravity · --agy ?"}
-    Q -- "no &nbsp;(default)" --> G["<b>Gemini</b><br/>ask-gemini MCP<br/><i>↳ fallback&nbsp;<code>gemini -p</code></i>"]
-    Q -- "yes" --> A["<b>Antigravity</b><br/><code>agy -p … --print-timeout 5m</code>"]
-    G --> R["answer relayed back<br/>into your Claude session"]
-    A --> R
-    classDef gem fill:#4285F4,stroke:#1a56db,color:#fff;
-    classDef agy fill:#1A73E8,stroke:#0b3d91,color:#fff;
-    class G gem
-    class A agy
+sequenceDiagram
+    participant You
+    participant Claude as Claude Code
+    participant Agy as Antigravity (agy)
+    You->>Claude: /agy "design a retry policy"
+    Claude->>Agy: agy -p "design a retry policy" --print-timeout 5m
+    Agy-->>Claude: answer
+    Claude-->>You: relays it, then keeps working with it
 ```
-
-The leading flag (`-P`, `--antigravity`, or `--agy`) selects Antigravity and is
-**stripped** before the prompt is sent. Everything else goes to Gemini.
 
 ## ⚡ Quick start
 
@@ -72,33 +61,32 @@ claude plugin install agy-consult@aigen-cli-tools
 
 ## 🧑‍💻 Usage
 
-| Command | Goes to | Notes |
-|---|---|---|
-| `/agy <question>` | **Gemini** | the default backend |
-| `/agy @src/foo.py what does this do?` | **Gemini** | `@file` pulls the file in (ask-gemini syntax) |
-| `/agy --model gemini-2.5-pro <q>` | **Gemini** | pin a specific model |
-| `/agy -P <question>` | **Antigravity** | `--antigravity` / `--agy` work too |
+| Command | What it does |
+|---|---|
+| `/agy <question>` | ask Antigravity, relay the answer |
+| `/agy --model <name> <question>` | pin a specific model (`agy models` to list) |
+| `/agy --add-dir <path> <question>` | give `agy` an extra context directory |
+| `/agy -c <follow-up>` | continue the previous `agy` conversation |
 
-The reply is prefixed with the backend that answered — **`Gemini:`** or
-**`Antigravity (agy):`** — so you always know who's talking.
+The reply comes back prefixed with **`Antigravity (agy):`** so you always know
+it's the external model talking, not Claude.
 
 ## 🔌 Requirements
 
-| Backend | Needs |
-|---|---|
-| **Gemini** (default) | the `gemini-cli` MCP server (tool `mcp__gemini-cli__ask-gemini`), **or** the `gemini` CLI on your `PATH` |
-| **Antigravity** (`-P`) | the `agy` CLI installed and signed in via the **Antigravity desktop app** |
+- The **`agy` CLI** installed (`~/.local/bin/agy`) and signed in through the
+  **Antigravity desktop app**.
 
 > ⏳ **Heads-up on `agy`:** it's an *agentic* CLI — slow to start (tens of
-> seconds) and authenticated through the desktop app. If it hangs or errors on
-> auth, make sure you're signed in to Antigravity. The command already uses a
-> generous `--print-timeout 5m`.
+> seconds) and authenticated via the desktop app. If it hangs or errors on auth,
+> make sure you're signed in to Antigravity. The command already uses a generous
+> `--print-timeout 5m`.
 
 ## 🛡️ Safety
 
 The command **never** passes `--dangerously-skip-permissions` to `agy`. That
 flag auto-approves every tool the model decides to run — unsafe, and blocked by
-policy. For plain Q&A `agy` answers fine without it.
+policy. For plain Q&A `agy` answers fine without it. The command is also scoped
+to `Bash(agy:*)` only — it can't reach any other tool.
 
 ## 🗂️ Layout
 
@@ -109,7 +97,7 @@ agy-claude-plugin/
 └── plugins/
     └── agy-consult/
         ├── .claude-plugin/
-        │   └── plugin.json        # plugin manifest (v0.1.0)
+        │   └── plugin.json        # plugin manifest (v0.2.0)
         └── commands/
             └── agy.md             # the /agy slash command
 ```
@@ -124,7 +112,7 @@ claude plugin update agy-consult@aigen-cli-tools   # upgrade the installed plugi
 ## 🤝 Contributing
 
 Issues and PRs welcome. The whole plugin is one markdown command file plus two
-small JSON manifests — easy to fork, easy to extend with new backends.
+small JSON manifests — easy to fork, easy to extend.
 
 ## 📄 License
 

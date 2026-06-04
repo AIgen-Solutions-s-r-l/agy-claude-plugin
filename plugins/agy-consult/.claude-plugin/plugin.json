@@ -1,7 +1,7 @@
 {
   "name": "agy-consult",
-  "description": "Consult an external CLI model from Claude Code — Gemini by default, Antigravity (agy) with -P.",
-  "version": "0.1.0",
+  "description": "Consult Google's Antigravity CLI (agy) from inside Claude Code via the /agy command.",
+  "version": "0.2.0",
   "author": {
     "name": "Alessio Rocchi"
   },
@@ -9,11 +9,11 @@
   "repository": "https://github.com/AIgen-Solutions-s-r-l/agy-claude-plugin",
   "license": "MIT",
   "keywords": [
-    "gemini",
     "antigravity",
     "agy",
+    "google",
     "consult",
     "cli",
-    "external-model"
+    "slash-command"
   ]
 }

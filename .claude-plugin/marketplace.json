@@ -1,6 +1,6 @@
 {
   "name": "aigen-cli-tools",
-  "description": "Claude Code tools for consulting external coding-model CLIs (Gemini, Antigravity).",
+  "description": "Claude Code tools for consulting external coding-model CLIs.",
   "owner": {
     "name": "Alessio Rocchi"
   },
@@ -8,7 +8,7 @@
     {
       "name": "agy-consult",
       "source": "./plugins/agy-consult",
-      "description": "Consult an external CLI model from Claude Code — Gemini by default, Antigravity (agy) with -P."
+      "description": "Consult Google's Antigravity CLI (agy) from Claude Code via the /agy command."
     }
   ]
 }
