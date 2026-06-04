@@ -57,7 +57,7 @@ prompt**:
 ```
 dir="$(mktemp -d)"
 # materialize each named file's bounded region with an in-scope sed slice:
-sed -n "1,400p" "$file" > "$dir/<name>"   # ~400 lines / ~24 KB cap
+sed -n "1,400p" "$file" > "$dir/<name>"   # bounded slice; stay within the ~600-line / ~24 KB hard cap above
 # (target the region around the stack-trace line numbers when a file is large)
 ```
 
