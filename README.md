@@ -9,7 +9,7 @@ ask it a question with `/agy`, get the answer back inline, keep working.
 <br/>
 
 ![Claude Code](https://img.shields.io/badge/Claude%20Code-plugin-D97757?style=for-the-badge&logo=anthropic&logoColor=white)
-![Version](https://img.shields.io/badge/version-0.2.0-2563EB?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-0.2.1-2563EB?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-16A34A?style=for-the-badge)
 
 ![Antigravity](https://img.shields.io/badge/backend-Antigravity%20(agy)-1A73E8?logo=google&logoColor=white)
@@ -26,6 +26,9 @@ a tricky algorithm, an unfamiliar stack trace, a quick design sanity-check.
 `agy-consult` lets Claude ask **Antigravity** inline, then keep driving your
 work with the answer in hand. No tab-switching, no copy-paste.
 
+One CLI, many vendors: `agy` fronts **Gemini, Claude, and GPT-OSS** models, so a
+single `/agy` gives Claude a real second opinion from a different stable.
+
 ## 🔁 The flow
 
 ```mermaid
@@ -34,7 +37,7 @@ sequenceDiagram
     participant Claude as Claude Code
     participant Agy as Antigravity (agy)
     You->>Claude: /agy "design a retry policy"
-    Claude->>Agy: agy -p "design a retry policy" --print-timeout 5m
+    Claude->>Agy: agy -p "design a retry policy" --print-timeout 90s
     Agy-->>Claude: answer
     Claude-->>You: relays it, then keeps working with it
 ```
@@ -63,7 +66,8 @@ claude plugin install agy-consult@aigen-cli-tools
 
 | Command | What it does |
 |---|---|
-| `/agy <question>` | ask Antigravity, relay the answer |
+| `/agy <question>` | ask Antigravity, relay the answer (90s timeout) |
+| `/agy --deep <question>` | same, with a longer 5m timeout for heavy agentic work |
 | `/agy --model <name> <question>` | pin a specific model (`agy models` to list) |
 | `/agy --add-dir <path> <question>` | give `agy` an extra context directory |
 | `/agy -c <follow-up>` | continue the previous `agy` conversation |
@@ -78,8 +82,16 @@ it's the external model talking, not Claude.
 
 > ⏳ **Heads-up on `agy`:** it's an *agentic* CLI — slow to start (tens of
 > seconds) and authenticated via the desktop app. If it hangs or errors on auth,
-> make sure you're signed in to Antigravity. The command already uses a generous
-> `--print-timeout 5m`.
+> make sure you're signed in to Antigravity. The default `--print-timeout` is now
+> **90s** (warm calls are ~5s); use `--deep` for the 5m timeout on heavy agentic
+> work.
+
+## 🔐 Privacy / governance
+
+`agy` authenticates to **Google** and stores prompts **and** responses in
+**cleartext locally** — any context you pass **leaves the machine**. The command
+never auto-attaches secrets, `.env` files, or `.gitignored` files; only what you
+knowingly choose to share is sent.
 
 ## 🛡️ Safety
 
@@ -94,10 +106,11 @@ to `Bash(agy:*)` only — it can't reach any other tool.
 agy-claude-plugin/
 ├── .claude-plugin/
 │   └── marketplace.json          # marketplace "aigen-cli-tools"
+├── CHANGELOG.md                  # release history (Keep a Changelog)
 └── plugins/
     └── agy-consult/
         ├── .claude-plugin/
-        │   └── plugin.json        # plugin manifest (v0.2.0)
+        │   └── plugin.json        # plugin manifest (v0.2.1)
         └── commands/
             └── agy.md             # the /agy slash command
 ```
