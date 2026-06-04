@@ -73,6 +73,7 @@ claude plugin install agy-consult@aigen-cli-tools
 | `/agy -c <follow-up>` | continue the previous `agy` conversation |
 | `/agy-review [--deep] [focus]` | senior-reviewer review of your current diff (bounded, consented, `--sandbox`, 3m / 5m with `--deep`) |
 | `/agy-debug <error/trace> [file …]` | root-cause hypotheses + next checks from a pasted error and the named file(s) (bounded, consented, `--sandbox`) |
+| `/agy-panel <question>` | ask the same question across several distinct models (Gemini / Claude / GPT-OSS) and compare answers side by side (names validated against `agy models`; one backend, so not failure-independent) |
 
 The reply comes back prefixed with **`Antigravity (agy):`** so you always know
 it's the external model talking, not Claude.
