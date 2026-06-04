@@ -4,6 +4,17 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] — 2026-06-04
+
+### Added
+- **`/agy-review` and `/agy-debug`** — job-aware consults that gather a bounded
+  amount of auto-context (the current diff for review; the pasted error/trace
+  plus named file(s) for debug) behind a consent gate before sending it to
+  Antigravity.
+- **`/agy-panel`** — an integrity-checked, cross-vendor opinion comparison that
+  asks the same question across several distinct models and presents the answers
+  side by side.
+
 ## [0.2.1] — 2026-06-04
 
 ### Reliability & honest-failure hardening
