@@ -1,0 +1,5 @@
+# FAKE planted secrets — fixture for test/secret-scan.sh ONLY.
+# These are NOT real credentials. They exist so the secret scan is falsifiable.
+aws_access_key_id = AKIAIOSFODNN7EXAMPLE
+api_key = "sk-test-FAKE-do-not-use-1234567890"
+Authorization: Bearer fake-test-token-abcdef0123456789

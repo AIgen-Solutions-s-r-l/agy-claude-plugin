@@ -1,7 +1,7 @@
 ---
 description: Send an error/stack trace plus the relevant file(s) to Antigravity (agy) for root-cause analysis.
 argument-hint: "[--deep] <error or stack trace> [file ...]"
-allowed-tools: Bash(agy:*), Bash(git status:*), Bash(git rev-parse:*), Bash(mktemp:*), Bash(sed:*)
+allowed-tools: Bash(agy:*), Bash(git status:*), Bash(git rev-parse:*), Bash(git check-ignore:*), Bash(mktemp:*), Bash(sed:*), Bash(grep:*)
 ---
 
 Have **Antigravity** (Google's `agy` CLI) help debug an error as a
@@ -66,6 +66,28 @@ bounded copy is done **entirely** with the listed `mktemp`/`sed` commands; the
 recipe never calls Read/Write, so it stays inside `allowed-tools` and never
 prompts.
 
+## Pre-send secret scan (best-effort backstop — not a guarantee)
+
+This is a **deterministic last-line check** layered on top of the bounding, the
+consent line, and the existing secret/`.env`/`.gitignored` denylist — **not** a
+replacement for them and **not** a guarantee. It catches obvious planted
+secrets; treat the denylist + consent as the primary control.
+
+Right **before** sending, scan the bounded temp dir for secret signatures with
+the in-scope `grep` (both tokens are in `allowed-tools`):
+
+```
+grep -rnEi 'BEGIN [A-Z ]*PRIVATE KEY|AKIA[0-9A-Z]{16}|(authorization|bearer)[[:space:]:]+[A-Za-z0-9._-]+|(api[_-]?key|secret|password|passwd|token)[[:space:]]*[:=]' "$dir"
+```
+
+- Before attaching a named file, also honour git's ignore rules: run
+  `git check-ignore -- <path>` and **skip** any path it flags (it is a
+  `.gitignored` file and must not leave the machine).
+- **If `grep` matches** (a likely secret), **ABORT** the send — mirror the
+  panel's ABORT discipline: show the offending **file:line** from the `grep`
+  output and stop, rather than transmitting it. Do not "scrub and continue"
+  silently; surface it to the user.
+
 ## Run
 
 This command may run **only** `agy ...` and the git/`mktemp`/`sed` commands
@@ -115,6 +137,10 @@ Same rules as `/agy`:
 **cleartext locally**. The attached files **leave the machine**, so they are
 strictly bounded, consented (the line above), and free of secrets, `.env`, and
 `.gitignored` files. **Never** pass `--dangerously-skip-permissions`.
+
+**IP / terms:** code attached to a consult is **transmitted to Google** under
+the Antigravity terms — do **not** consult on code you are contractually barred
+(NDA, license, or employer policy) from sharing with third-party AI.
 
 ## Output
 
