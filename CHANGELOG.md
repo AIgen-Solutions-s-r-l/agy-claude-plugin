@@ -4,6 +4,42 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] — 2026-06-04
+
+### Added
+- **`/agy` now validates a pinned `--model`.** When (and only when) the user
+  passes `--model <name>`, the recipe first runs `agy models` and ABORTs if the
+  name does not appear verbatim — closing the silent-default landmine (`agy
+  --model "<typo>"` returns exit 0 and answers as the default). The default warm
+  fast path is untouched (no extra call).
+- **`/agy` rate-limit / quota failure branch** distinct from the
+  cold-start/auth timeout, so a usage-cap error is diagnosed as "wait and retry"
+  rather than an auth problem.
+- **`/agy` "relay, do not surrender judgment" rule:** if `agy`'s answer
+  contradicts Claude's own correct analysis, FLAG the disagreement rather than
+  deferring to the `Antigravity (agy):` prefix (which marks the source, not a
+  trust badge).
+- **`/agy-review` and `/agy-debug` pre-send secret scan** — a deterministic,
+  best-effort backstop (in-scope `grep -nEi` for PRIVATE KEY blocks, AKIA keys,
+  bearer/authorization headers, and `api_key`/`secret`/`password`/`token`
+  assignments, plus `git check-ignore` to skip ignored paths) that ABORTs the
+  send on a hit, layered on top of the existing bounding, consent line, and
+  denylist (not a guarantee). `allowed-tools` gained `Bash(grep:*)` and
+  `Bash(git check-ignore:*)`.
+- **`test/secret-scan.sh` + `test/fixtures/leaky.txt`** — a tracked, FAKE
+  planted secret and a test that runs the same grep signatures, making the
+  "never leaks secrets" claim falsifiable. Wired into the `copy-truth` CI
+  workflow as a `secret-scan` job.
+- **IP / terms note** in `/agy-review`, `/agy-debug`, and the README
+  privacy/governance section: code attached to a consult is transmitted to
+  Google under the Antigravity terms — do not consult on code you are
+  contractually barred from sharing with third-party AI.
+
+### Changed
+- **`/agy` `-c` / `--continue` caveat:** documented that conversation state is
+  cwd-keyed and last-writer-wins, and pointed users to `agy --conversation <ID>`
+  for a deterministic resume.
+
 ## [0.3.1] — 2026-06-04
 
 ### Changed

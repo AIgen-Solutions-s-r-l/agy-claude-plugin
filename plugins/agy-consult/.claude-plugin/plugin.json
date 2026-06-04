@@ -1,7 +1,7 @@
 {
   "name": "agy-consult",
   "description": "A four-command suite (/agy, /agy-review, /agy-debug, /agy-panel) that consults Gemini, Claude, and GPT-OSS models through Google's Antigravity (agy) CLI from inside Claude Code.",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "author": {
     "name": "Alessio Rocchi",
     "email": "elis@aigensolutions.it"

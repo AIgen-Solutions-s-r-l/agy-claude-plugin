@@ -11,3 +11,11 @@ jobs:
           if grep -rnE "$dead" . --exclude-dir=.git --exclude=CHANGELOG.md --exclude=copy-truth.yml; then
             echo "::error::Dead storefront copy reappeared (see matches above)."; exit 1
           fi
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Secret scan catches the planted fixture (privacy claim is falsifiable)
+        run: |
+          chmod +x test/secret-scan.sh
+          test/secret-scan.sh
