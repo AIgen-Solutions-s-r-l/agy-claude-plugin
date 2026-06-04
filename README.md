@@ -71,6 +71,8 @@ claude plugin install agy-consult@aigen-cli-tools
 | `/agy --model <name> <question>` | pin a specific model (`agy models` to list) |
 | `/agy --add-dir <path> <question>` | give `agy` an extra context directory |
 | `/agy -c <follow-up>` | continue the previous `agy` conversation |
+| `/agy-review [--deep] [focus]` | senior-reviewer review of your current diff (bounded, consented, `--sandbox`, 3m / 5m with `--deep`) |
+| `/agy-debug <error/trace> [file …]` | root-cause hypotheses + next checks from a pasted error and the named file(s) (bounded, consented, `--sandbox`) |
 
 The reply comes back prefixed with **`Antigravity (agy):`** so you always know
 it's the external model talking, not Claude.
