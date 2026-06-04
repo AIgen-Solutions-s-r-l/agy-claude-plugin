@@ -4,6 +4,22 @@ All notable changes to this project are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.1] — 2026-06-04
+
+### Changed
+- **`/agy-debug` context transport is now in-scope and prompt-free.** The recipe
+  materializes each bounded file region into the temp dir with an explicit
+  in-scope `mktemp`/`sed` slice instead of implicitly relying on Claude's
+  built-in Read/Write (which are not in `allowed-tools`). Public, non-bypass
+  users no longer get a mid-command permission prompt. `allowed-tools` gained
+  `Bash(sed:*)` to back the bounded copy; the cap, consent line,
+  secret/`.env`/`.gitignored` denylist, `--sandbox`, and never-fabricate failure
+  handling are unchanged.
+
+### Added
+- **`/agy-debug` now advertises `--deep`** in its `argument-hint` and its README
+  usage row (raising the `--print-timeout` to 5m), mirroring `/agy-review`.
+
 ## [0.3.0] — 2026-06-04
 
 ### Added
