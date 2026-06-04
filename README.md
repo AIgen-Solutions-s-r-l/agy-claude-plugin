@@ -9,7 +9,7 @@ ask it a question with `/agy`, get the answer back inline, keep working.
 <br/>
 
 ![Claude Code](https://img.shields.io/badge/Claude%20Code-plugin-D97757?style=for-the-badge&logo=anthropic&logoColor=white)
-![Version](https://img.shields.io/badge/version-0.3.0-2563EB?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-0.3.1-2563EB?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-16A34A?style=for-the-badge)
 
 ![Antigravity](https://img.shields.io/badge/backend-Antigravity%20(agy)-1A73E8?logo=google&logoColor=white)
@@ -72,7 +72,7 @@ claude plugin install agy-consult@aigen-cli-tools
 | `/agy --add-dir <path> <question>` | give `agy` an extra context directory |
 | `/agy -c <follow-up>` | continue the previous `agy` conversation |
 | `/agy-review [--deep] [focus]` | senior-reviewer review of your current diff (bounded, consented, `--sandbox`, 3m / 5m with `--deep`) |
-| `/agy-debug <error/trace> [file …]` | root-cause hypotheses + next checks from a pasted error and the named file(s) (bounded, consented, `--sandbox`) |
+| `/agy-debug [--deep] <error/trace> [file …]` | root-cause hypotheses + next checks from a pasted error and the named file(s) (bounded, consented, `--sandbox`, 3m / 5m with `--deep`) |
 | `/agy-panel <question>` | ask the same question across several distinct models (Gemini / Claude / GPT-OSS) and compare answers side by side (names validated against `agy models`; one backend, so not failure-independent) |
 
 The reply comes back prefixed with **`Antigravity (agy):`** so you always know
@@ -113,7 +113,7 @@ agy-claude-plugin/
 └── plugins/
     └── agy-consult/
         ├── .claude-plugin/
-        │   └── plugin.json        # plugin manifest (v0.3.0)
+        │   └── plugin.json        # plugin manifest (v0.3.1)
         └── commands/
             └── agy.md             # the /agy slash command
 ```

@@ -1,7 +1,7 @@
 ---
 description: Send an error/stack trace plus the relevant file(s) to Antigravity (agy) for root-cause analysis.
-argument-hint: "<error or stack trace> [file ...]"
-allowed-tools: Bash(agy:*), Bash(git status:*), Bash(git rev-parse:*), Bash(mktemp:*)
+argument-hint: "[--deep] <error or stack trace> [file ...]"
+allowed-tools: Bash(agy:*), Bash(git status:*), Bash(git rev-parse:*), Bash(mktemp:*), Bash(sed:*)
 ---
 
 Have **Antigravity** (Google's `agy` CLI) help debug an error as a
@@ -46,23 +46,32 @@ Before sending, print exactly one line stating what leaves the machine, e.g.:
 
 Fill in the real counts from the bounded attachments.
 
-## Transport via a dedicated temp dir
+## Transport via a dedicated temp dir (in-scope, prompt-free)
 
 Copy **only** the bounded, consented file content into a fresh temp directory
 and hand that to `agy` with `--add-dir` (so nothing else in the repo is
-exposed):
+exposed). Do this with the **in-scope** `mktemp`/`sed` commands — **not** with
+Claude's built-in Read/Write — so a non-bypass user gets **no mid-command
+prompt**:
 
 ```
 dir="$(mktemp -d)"
-# write each bounded file region into "$dir/<name>" (truncate to the cap first)
+# materialize each named file's bounded region with an in-scope sed slice:
+sed -n "1,400p" "$file" > "$dir/<name>"   # ~400 lines / ~24 KB cap
+# (target the region around the stack-trace line numbers when a file is large)
 ```
 
-The temp dir holds nothing but the debug artifacts you chose to attach.
+The temp dir holds nothing but the debug artifacts you chose to attach. The
+bounded copy is done **entirely** with the listed `mktemp`/`sed` commands; the
+recipe never calls Read/Write, so it stays inside `allowed-tools` and never
+prompts.
 
 ## Run
 
-This command may run **only** `agy ...` and the git/`mktemp` commands above —
-nothing else. Because real code is attached, run with `--sandbox`:
+This command may run **only** `agy ...` and the git/`mktemp`/`sed` commands
+above — **not** Read/Write, and nothing else. Every one of those is in
+`allowed-tools`, so a non-bypass user is never prompted mid-command. Because
+real code is attached, run with `--sandbox`:
 
 ```
 agy -p "<debug prompt>" --add-dir "$dir" --sandbox --print-timeout 3m
