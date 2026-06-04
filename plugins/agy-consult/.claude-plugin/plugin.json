@@ -1,9 +1,10 @@
 {
   "name": "agy-consult",
   "description": "Consult Google's Antigravity CLI (agy) from inside Claude Code via the /agy command.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": {
-    "name": "Alessio Rocchi"
+    "name": "Alessio Rocchi",
+    "email": "elis@aigensolutions.it"
   },
   "homepage": "https://github.com/AIgen-Solutions-s-r-l/agy-claude-plugin",
   "repository": "https://github.com/AIgen-Solutions-s-r-l/agy-claude-plugin",
@@ -14,6 +15,11 @@
     "google",
     "consult",
     "cli",
-    "slash-command"
+    "slash-command",
+    "second-opinion",
+    "multi-model",
+    "gemini",
+    "claude",
+    "gpt-oss"
   ]
 }
